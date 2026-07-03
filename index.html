@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório MySQL - MediCore</title>
+    <style>
+        :root {
+            --primary: #2b4c7e;
+            --primary-light: #eef2f7;
+            --secondary: #4a7c59;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --code-bg: #f8f9fa;
+            --border-color: #dddddd;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            background-color: #fafafa;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        header p {
+            margin: 0.5rem 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #e1e1e1;
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-card {
+            background-color: var(--primary-light);
+            padding: 1rem;
+            border-radius: 4px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-card strong {
+            display: block;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            background-color: #fff;
+            border-radius: 4px;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 2px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .img-caption {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .reflection-box {
+            background-color: #e8f5e9;
+            border-left: 4px solid var(--secondary);
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Laboratório MySQL — Cenário MediCore</h1>
+        <p>Evidências e Documentação do Projeto Prático</p>
+    </header>
+
+    <div class="container">
+
+        <!-- SEÇÃO 1: IDENTIFICAÇÃO -->
+        <section id="identificacao">
+            <h2>1. Identificação do Aluno & Ambiente</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <strong>Nome Completo</strong>
+                    Henrique Vargas Griebeler
+                </div>
+                <div class="info-card">
+                    <strong>Matrícula</strong>
+                    01072009
+                </div>
+                <div class="info-card">
+                    <strong>Ambiente MySQL</strong>
+                    Ambiente de Laboratório Local (MySQL Workbench)
+                </div>
+                <div class="info-card">
+                    <strong>Schema Utilizado</strong>
+                    <code>lab_01072009</code>
+                </div>
+            </div>
+            
+            <h3>Visualização do Schema no Banco de Dados</h3>
+            <p>Abaixo está a evidência visual da criação e estrutura das tabelas obrigatórias no MySQL Workbench:</p>
+            <div class="image-container">
+                <img src="assets/schema-workbench.png" alt="Estrutura do Schema no Workbench">
+                <div class="img-caption">Painel lateral mostrando o schema lab_01072009 e suas tabelas expandidas.</div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 2: ESTRUTURA E INSERTS -->
+        <section id="estrutura">
+            <h2>2. Script DDL e Massa de Dados</h2>
+            <p>O script abaixo contém a criação integral das 4 tabelas exigidas pelo cenário, contendo chaves primárias, estrangeiras e a inserção da massa de dados inicial:</p>
+            <pre>
+CREATE SCHEMA IF NOT EXISTS lab_01072009;
+USE lab_01072009;
+
+CREATE TABLE pacientes (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  nome VARCHAR(100) NOT NULL,
+  cpf VARCHAR(14) NOT NULL,
+  data_nasc DATE NOT NULL
+);
+
+CREATE TABLE consultas (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  paciente_id INT NOT NULL,
+  data_consulta DATE NOT NULL,
+  especialidade VARCHAR(80) NOT NULL,
+  FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
+);
+
+CREATE TABLE prontuarios (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  consulta_id INT NOT NULL,
+  observacao TEXT NOT NULL,
+  FOREIGN KEY (consulta_id) REFERENCES consultas(id)
+);
+
+CREATE TABLE auditoria (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  tabela VARCHAR(50) NOT NULL,
+  operacao VARCHAR(20) NOT NULL,
+  registro_id INT NOT NULL,
+  usuario VARCHAR(100) NOT NULL,
+  criado_em DATETIME NOT NULL
+);
+
+INSERT INTO pacientes (nome, cpf, data_nasc) VALUES
+('João Silva', '123.456.789-00', '1985-05-12'),
+('Maria Santos', '987.654.321-11', '1992-08-24'),
+('Carlos Souza', '456.789.123-22', '1978-11-03'),
+('Ana Oliveira', '321.654.987-33', '2000-01-15'),
+('Pedro Rocha', '789.123.456-44', '1965-06-30');
+
+INSERT INTO consultas (paciente_id, data_consulta, especialidade) VALUES
+(1, '2025-02-10', 'Cardiologia'),
+(1, '2025-06-15', 'Clínica Médica'),
+(2, '2025-03-12', 'Dermatologia'),
+(2, '2025-09-20', 'Ginecologia'),
+(3, '2025-01-22', 'Ortopedia'),
+(3, '2025-07-05', 'Ortopedia'),
+(4, '2025-04-18', 'Pediatria'),
+(4, '2025-10-12', 'Clínica Médica'),
+(5, '2025-05-30', 'Geriatria'),
+(5, '2025-11-14', 'Cardiologia');
+            </pre>
+        </section>
+
+        <!-- SEÇÃO 3: OBJETO DO GRUPO A -->
+        <section id="grupo-a">
+            <h2>3. Objeto do Grupo A — Trigger de Auditoria Automatizada</h2>
+            <p>Foi escolhida a implementação de uma trigger <code>AFTER INSERT</code> na tabela <code>consultas</code> para criar logs de auditoria automáticos.</p>
+            
+            <h3>Código SQL Implementado</h3>
+            <pre>
+DELIMITER $$
+
+CREATE TRIGGER tg_auditoria_consulta
+AFTER INSERT ON consultas
+FOR EACH ROW
+BEGIN
+    INSERT INTO auditoria (tabela, operacao, registro_id, usuario, criado_em)
+    VALUES ('consultas', 'INSERT', NEW.id, USER(), NOW());
+END$$
+
+DELIMITER ;
+            </pre>
+
+            <h3>Evidência de Funcionamento</h3>
+            <p>Resultado gerado após uma nova inserção na tabela de consultas, populando a auditoria:</p>
+            <div class="image-container">
+                <img src="assets/call-procedure.png" alt="Evidência da Trigger de Auditoria">
+                <div class="img-caption">Consulta à tabela auditoria comprovando o disparo correto da trigger.</div>
+            </div>
+            
+            <h3>Relatório de Uso de IA</h3>
+            <p><strong>O que a IA sugeriu e o que foi validado/corrigiu:</strong> A IA propôs a estrutura da trigger e o uso da função nativa <code>USER()</code> para capturar a sessão atual. No ambiente local, validei o código adicionando o bloco de <code>DELIMITER $$</code> para garantir que o interpretador do MySQL executasse o gatilho sem interrupções de sintaxe.</p>
+        </section>
+
+        <!-- SEÇÃO 4: GRUPO B - ÍNDICE + EXPLAIN -->
+        <section id="grupo-b">
+            <h2>4. Objeto do Grupo B — Índice Composto + Análise de EXPLAIN</h2>
+            <p>Consulta selecionada para análise de performance:</p>
+            <pre>
+SELECT id, especialidade 
+FROM consultas 
+WHERE paciente_id = 1 AND data_consulta >= '2025-01-01';
+            </pre>
+
+            <h3>Etapa 1: EXPLAIN ANTES da Criação do Índice</h3>
+            <div class="image-container">
+                <img src="assets/explain-antes.png" alt="Explain antes do índice composto">
+                <div class="img-instruction">Visualização do plano original com type = ALL (Full Table Scan).</div>
+            </div>
+
+            <h3>Etapa 2: Criação do Índice Composto</h3>
+            <pre>
+CREATE INDEX idx_consultas_paciente_data
+ON consultas (paciente_id, data_consulta);
+            </pre>
+
+            <h3>Etapa 3: EXPLAIN DEPOIS da Criação do Índice</h3>
+            <div class="image-container">
+                <img src="assets/explain-depois.png" alt="Explain depois do índice composto">
+                <div class="img-instruction">Visualização do plano otimizado com a coluna key exibindo o índice.</div>
+            </div>
+
+            <h3>Reflexão Técnica sobre o Plano de Execução</h3>
+            <div class="reflection-box">
+                <p>O índice composto foi devidamente utilizado pelo otimizador de consultas do MySQL. A confirmação técnica é visível na análise comparativa dos planos de execução: a coluna <code>type</code> migrou de <code>ALL</code> (Full Table Scan) para <code>ref</code> (busca indexada), e a coluna <code>key</code> passou a referenciar diretamente o identificador <code>idx_consultas_paciente_data</code> criado. Para a coleta da evidência de "antes", utilizou-se a cláusula <code>IGNORE INDEX</code>, contornando a restrição de chave estrangeira do banco.</p>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 5: ACESSO VERCEL -->
+        <section id="acesso-vercel">
+            <h2>5. Gerenciamento de Membros e Acesso da Atividade</h2>
+            <p>Confirmação de que o acesso de visualização do projeto na Vercel foi configurado para o e-mail do professor:</p>
+            <div class="image-container">
+                <img src="assets/members-vercel.png" alt="Tela de Membros na Vercel">
+                <div class="img-caption">Painel de gerenciamento de membros mostrando o convite enviado ao professor.</div>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>
